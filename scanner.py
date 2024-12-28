@@ -6,7 +6,7 @@ import sys
 import time
 import threading
 
-SUBNET="ABC.CDE.FG.HI/YY"
+SUBNET="172.16.41.0/24"
 MESSAGE="Bright"
 
 class IP:
@@ -86,7 +86,7 @@ class Scanner:
         self.socket.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
 
         if os.name == 'nt':
-            self.socket.ioctl(socket.SIO_RCVALL, socket.RCVALL_ON)
+            self.socket.ioctl(socket.SIO_RCVALL, 1)
         
     def sniff(self):
         hosts_up = set([f'{str(self.host)} *'])
@@ -121,7 +121,7 @@ class Scanner:
         except KeyboardInterrupt as E:
             # Turn off promiscous mode
             if os.name == 'nt':
-                self.socket.setsockopt(socket.SIO_RCVALL, socket.SIO_RCVALL_OFF)
+                self.socket.ioctl(socket.SIO_RCVALL, 0)
             
             # List all the discovered hosts
             print('\nUser Interrupted')
